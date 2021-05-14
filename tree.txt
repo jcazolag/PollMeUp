@@ -1,0 +1,23 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es 46C8-D9BE
+C:.
+|
+|
+|       
++---backend
+|   +---src
+|        app.py
+|   
++---frontend
+    +---src
+        |  app.js
+        +---components
+        |     about.js
+        |     homepage.js
+        |     navbar.js
+        |     inicio.js
+        |     users.js
+        |     login.js
+        |
+        +---helper
+              context.js
