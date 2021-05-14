@@ -148,7 +148,7 @@ export const Users = () => {
                         <td>{user.password}</td>
                         <td>
                             <button 
-                                className="btn btn-secondary btn-sm btn-block"
+                                className="btn btn-danger btn-sm btn-block"
                                 onClick ={e => editUser(user._id)}
                             >
                                 Edit

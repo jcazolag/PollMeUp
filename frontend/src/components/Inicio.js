@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 //import {LogInContext, UserContext} from '../Helper/Context'
 //import {useHistory} from 'react-router-dom'
 
+
 const API = process.env.REACT_APP_API;
 
 export const Inicio = () => {
@@ -27,6 +28,19 @@ export const Inicio = () => {
         e.preventDefault();
 
         if(!editing){
+            //Fecha
+            let date = new Date()
+
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()
+
+            if(month < 10){
+                setFechaInicio(`${day}-0${month}-${year}`)
+            }else{
+                setFechaInicio(`${day}-${month}-${year}`)
+            }
+            //Crear encuesta
             const res = await fetch(`${API}/polls`, {
                 method: 'POST',
                 headers:{
@@ -80,6 +94,7 @@ export const Inicio = () => {
         getPolls();
     },[])
 
+
     const editPoll = async (id) => {
         const res = await fetch(`${API}/poll/${id}`)
         const data = await res.json();
@@ -91,7 +106,6 @@ export const Inicio = () => {
         setUser_id(data.user_id)
         setTitulo(data.titulo)
         setContenido(data.contenido)
-        setFechaInicio(data.fechaInicio)
         setFechaFinal(data.fechaFinal)
     }
 
@@ -105,13 +119,15 @@ export const Inicio = () => {
             console.log(data)
             await getPolls();
         }
+
     }
 
     return (
         <div className="row">
             <div className="col-md-4">
                 <form onSubmit={handleSubmit} className="card card-body">
-                <div className="form-group">
+                    <div><h1>Crear encuesta</h1></div>
+                    <div className="form-group">
                         <input 
                             type="text" 
                             onChange={e => setUser_id(e.target.value)} 
@@ -122,6 +138,7 @@ export const Inicio = () => {
                         />
                     </div>
                     <div className="form-group">
+                        <div>Titulo:</div>
                         <input 
                             type="text" 
                             onChange={e => setTitulo(e.target.value)} 
@@ -132,6 +149,7 @@ export const Inicio = () => {
                         />
                     </div>
                     <div className="form-group">
+                        <div>Contenido:</div>
                         <input 
                             type="text" 
                             onChange={e => setContenido(e.target.value)} 
@@ -141,16 +159,7 @@ export const Inicio = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <input 
-                            type="date" 
-                            onChange={e => setFechaInicio(e.target.value)} 
-                            value={fechaInicio} 
-                            className="form-control" 
-                            placeholder="Fecha Inicio" 
-                            autoFocus
-                        />
-                    </div>
-                    <div className="form-group">
+                        <div>Fecha Final:</div>
                         <input 
                             type="date" 
                             onChange={e => setFechaFinal(e.target.value)} 
@@ -171,7 +180,7 @@ export const Inicio = () => {
                             <th>Creador</th>
                             <th>Titulo</th>
                             <th>Contenido</th>
-                            <th>Fecha Inicio</th>
+                            <th>Fecha Creacion</th>
                             <th>Fecha Final</th>
                             <th>Operations</th>
                         </tr>
@@ -186,7 +195,7 @@ export const Inicio = () => {
                         <td>{poll.fechaFinal}</td>
                         <td>
                             <button 
-                                className="btn btn-secondary btn-sm btn-block"
+                                className="btn btn-danger btn-sm btn-block"
                                 onClick ={e => editPoll(poll._id)}
                             >
                                 Edit
@@ -196,6 +205,12 @@ export const Inicio = () => {
                                 onClick ={() => deletePoll(poll._id)}
                             >
                                 Delete
+                            </button>
+                            <button 
+                                className="btn btn-danger btn-sm btn-block"
+                                //onClick ={()}
+                            >
+                                Responder
                             </button>
                         </td>
                     </tr>
